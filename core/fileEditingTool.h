@@ -44,6 +44,7 @@
 //    return count;
 //}
 
+#ifdef _WIN32
 #include <io.h>
 #include <direct.h>                 // _mkdir
 
@@ -80,3 +81,4 @@ static inline int removeDatFiles(const std::string& dir)
     _findclose(h);
     return removed;
 }
+#endif
