@@ -24,6 +24,10 @@ void solverBase::initialize()
         std::cerr << "cudaSetDevice failed!  Do you have a CUDA-capable GPU installed?" << std::endl;
         exit(1);
     }
+	else
+	{
+		std::cout << "GPU is ready." << std::endl;
+	}
 
     simPara.numSteps = int((simPara.maximumTime) / simPara.timeStep) + 1;
     simPara.frameInterval = simPara.numSteps / simPara.numFrames;
@@ -254,3 +258,4 @@ void solverBase::outputSolidVTU()
         "  </UnstructuredGrid>\n"
         "</VTKFile>\n";
 }
+
