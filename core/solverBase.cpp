@@ -42,7 +42,6 @@ void solverBase::initialize()
 
     removeVtuFiles(dir);
     removeDatFiles(dir);
-	std::cout << "Clean up." << std::endl;
     outputData();
 
 	std::cout << "Initialization completed." << std::endl;
@@ -260,6 +259,7 @@ void solverBase::outputSolidVTU()
         "  </UnstructuredGrid>\n"
         "</VTKFile>\n";
 }
+
 
 
 
