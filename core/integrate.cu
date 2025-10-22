@@ -646,7 +646,7 @@ __global__ void calSolidForceTorque(solid s,
 		}
 	}
 
-	s.dyn.accelerations[idx_i] = F_i * s.inverseMass[idx_i] + g * (s.inverseMass[idx_i] > 0.);
+	s.dyn.accelerations[idx_i] = F_i * s.inverseMass[idx_i] + g * (s.inverseMass[idx_i] > 0. && s.clumpID[idx_i] < 0);
 	s.torques[idx_i] = T_i;
 }
 
@@ -779,4 +779,5 @@ void solidIntegrateAfterContact(DeviceData& d, double timeStep, int maxThreadsPe
 	numObjects = d.solids.points.num;
 	computeGPUParameter(grid, block, numObjects, maxThreadsPerBlock);
 	solidVelocityAngularVelocityIntegrate << <grid, block >> > (d.solids, 0.5 * timeStep);
+
 }
