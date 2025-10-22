@@ -184,9 +184,7 @@ __global__ void solveMassConservationEquationDensityIntegrate(fluid f,
 		double3 deltaW_ia = gradWendlandKernel3D(r_ia, h);
 		double3 dv_dt_a = s.dyn.accelerations[idx_a];
 		double U_L = dot(v_i, -e_ia);
-		double U_R = dot(2 * v_a - v_i, -e_ia);
-		//double U_L = dot(v_i, -e_ia);
-		//double U_R = dot(2 * v_a - v_i, -e_ia);
+		double U_R = dot(2 * v_i - v_a, -e_ia);
 		double P_L = P_i;
 		double P_a = P_i + rho_i * fmax(0., dot(g - dv_dt_a, e_ia)) * dot(r_ia, e_ia);
 		//double P_a = s.pressure[idx_a];
@@ -785,4 +783,5 @@ void solidIntegrateAfterContact(DeviceData& d, double timeStep, int maxThreadsPe
 	solidVelocityAngularVelocityIntegrate << <grid, block >> > (d.solids, 0.5 * timeStep);
 
 }
+
 
