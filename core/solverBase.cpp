@@ -36,12 +36,13 @@ void solverBase::initialize()
 	simPara.iFrame = 0;
 
     buildDeviceData();
-	std::cout << "Device data built" << std::endl;
+	std::cout << "Device data built." << std::endl;
     neighborSearch(dev, 0, 1, gpuPara.maxThreadsPerBlock);
     addBondData();
 
     removeVtuFiles(dir);
     removeDatFiles(dir);
+	std::cout << "Clean up." << std::endl;
     outputData();
 
 	std::cout << "Initialization completed." << std::endl;
@@ -259,5 +260,6 @@ void solverBase::outputSolidVTU()
         "  </UnstructuredGrid>\n"
         "</VTKFile>\n";
 }
+
 
 
