@@ -24,10 +24,6 @@ void solverBase::initialize()
         std::cerr << "cudaSetDevice failed!  Do you have a CUDA-capable GPU installed?" << std::endl;
         exit(1);
     }
-	else
-	{
-		std::cout << "GPU ready." << std::endl;
-	}
 
     simPara.numSteps = int((simPara.maximumTime) / simPara.timeStep) + 1;
     simPara.frameInterval = simPara.numSteps / simPara.numFrames;
@@ -36,7 +32,6 @@ void solverBase::initialize()
 	simPara.iFrame = 0;
 
     buildDeviceData();
-	std::cout << "Device data built." << std::endl;
     neighborSearch(dev, 0, 1, gpuPara.maxThreadsPerBlock);
     addBondData();
 
@@ -259,6 +254,7 @@ void solverBase::outputSolidVTU()
         "  </UnstructuredGrid>\n"
         "</VTKFile>\n";
 }
+
 
 
 
