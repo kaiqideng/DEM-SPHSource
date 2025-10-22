@@ -81,4 +81,62 @@ static inline int removeDatFiles(const std::string& dir)
     _findclose(h);
     return removed;
 }
+
+#else
+#include <dirent.h>
+#include <sys/stat.h>               // mkdir
+#include <cstring>
+
+#define MKDIR(path) mkdir(path, 0755)
+
+static bool inline hasVtuExt(const char* fname)
+{
+    const char* dot = strrchr(fname, '.');
+    return dot && std::strcmp(dot, ".vtu") == 0;
+}
+
+static bool inline hasDatExt(const char* fname)
+{
+    const char* dot = strrchr(fname, '.');
+    return dot && std::strcmp(dot, ".dat") == 0;
+}
+
+static int inline removeVtuFiles(const std::string& dir)
+{
+    DIR* dp = opendir(dir.c_str());
+    if (!dp) return 0;
+
+    int removed = 0;
+    struct dirent* ent;
+    while ((ent = readdir(dp)) != NULL)
+    {
+        if (ent->d_type == DT_DIR) continue;
+        if (!hasVtuExt(ent->d_name)) continue;
+
+        std::string full = dir + "/" + ent->d_name;
+        if (std::remove(full.c_str()) == 0) ++removed;
+    }
+    closedir(dp);
+    return removed;
+}
+
+static int inline removeDatFiles(const std::string& dir)
+{
+    DIR* dp = opendir(dir.c_str());
+    if (!dp) return 0;
+
+    int removed = 0;
+    struct dirent* ent;
+    while ((ent = readdir(dp)) != NULL)
+    {
+        if (ent->d_type == DT_DIR) continue;
+        if (!hasDatExt(ent->d_name)) continue;
+
+        std::string full = dir + "/" + ent->d_name;
+        if (std::remove(full.c_str()) == 0) ++removed;
+    }
+    closedir(dp);
+    return removed;
+}
+
 #endif
