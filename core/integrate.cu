@@ -705,14 +705,18 @@ __global__ void clumpVelocityAngularVelocityIntegrate(clump clumps,
 	int idx_c = blockIdx.x * blockDim.x + threadIdx.x;
 	if (idx_c >= clumps.num) return;
 
-	clumps.dyn.velocities[idx_c] += clumps.dyn.accelerations[idx_c] * dt;
+	double3 a_c = clumps.dyn.accelerations[idx_c];
+	double3 w_c = clumps.angularVelocities[idx_c];
+	clumps.dyn.velocities[idx_c] += a_c * dt;
 	double invM_c = clumps.inverseMass[idx_c];
 	if (invM_c > 0.) clumps.angularVelocities[idx_c] += (rotateInverseInertiaTensor(clumps.orientations[idx_c], clumps.inverseInertiaTensor[idx_c]) * clumps.torques[idx_c]) * dt;
 
 	for (int i = clumps.pebbleStartIndex[idx_c]; i < clumps.pebbleEndIndex[idx_c]; i++)
 	{
-		s.dyn.velocities[i] = clumps.dyn.velocities[idx_c] + cross(clumps.angularVelocities[idx_c], s.points.position[i] - clumps.centroidPosition[idx_c]);
-		s.angularVelocities[i] = clumps.angularVelocities[idx_c];
+		double3 r_pc = s.points.position[i] - clumps.centroidPosition[idx_c];
+		s.dyn.accelerations[i] = a_c + cross(a_c, r_pc) + cross(w_c, cross(w_c, r_pc));
+		s.dyn.velocities[i] = clumps.dyn.velocities[idx_c] + cross(w_c, r_pc);
+		s.angularVelocities[i] = w_c;
 	}
 }
 
@@ -781,3 +785,4 @@ void solidIntegrateAfterContact(DeviceData& d, double timeStep, int maxThreadsPe
 	solidVelocityAngularVelocityIntegrate << <grid, block >> > (d.solids, 0.5 * timeStep);
 
 }
+
