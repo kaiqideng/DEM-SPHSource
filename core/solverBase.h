@@ -18,7 +18,7 @@ public:
 protected:
 	void setProblemName(const std::string& name)
 	{
-		dir = name;
+		dir = name + "Output";
 	}
 
     void outputFluidVTU();
@@ -43,4 +43,5 @@ private:
     void initialize();
 
     virtual void update();
+
 };
