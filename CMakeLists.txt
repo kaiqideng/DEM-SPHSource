@@ -36,7 +36,16 @@ file(GLOB_RECURSE CORE_CPP CONFIGURE_DEPENDS ${CMAKE_SOURCE_DIR}/core/*.cpp)
 file(GLOB_RECURSE CORE_CU  CONFIGURE_DEPENDS ${CMAKE_SOURCE_DIR}/core/*.cu)
 file(GLOB_RECURSE DRIVERS  CONFIGURE_DEPENDS ${CMAKE_SOURCE_DIR}/driver/*.cpp)
 
-# ---------- Core object library (no mains) ----------
+# ---------- Core object library (no mains) ---------
+set(ALL_SOURCES ${CORE_CPP} ${CORE_CU} ${DRIVERS})
+list(FILTER ALL_SOURCES EXCLUDE REGEX "/\\.ipynb_checkpoints/")
+list(FILTER ALL_SOURCES EXCLUDE REGEX "-checkpoint\\.[ch]xx?$")
+list(FILTER ALL_SOURCES EXCLUDE REGEX "-checkpoint\\.cu$")
+
+set(CORE_SOURCES ${CORE_CPP} ${CORE_CU})
+list(FILTER CORE_SOURCES EXCLUDE REGEX "/\\.ipynb_checkpoints/")
+list(FILTER CORE_SOURCES EXCLUDE REGEX "-checkpoint\\.[ch]xx?$")
+list(FILTER CORE_SOURCES EXCLUDE REGEX "-checkpoint\\.cu$")
 add_library(core_obj OBJECT ${CORE_CPP} ${CORE_CU})
 
 set_target_properties(core_obj PROPERTIES
