@@ -26,7 +26,7 @@ void solverBase::initialize()
     }
 	else
 	{
-		std::cout << "GPU is ready." << std::endl;
+		std::cout << "GPU ready." << std::endl;
 	}
 
     simPara.numSteps = int((simPara.maximumTime) / simPara.timeStep) + 1;
@@ -36,6 +36,7 @@ void solverBase::initialize()
 	simPara.iFrame = 0;
 
     buildDeviceData();
+	std::cout << "Device data built" << std::endl;
     neighborSearch(dev, 0, 1, gpuPara.maxThreadsPerBlock);
     addBondData();
 
@@ -258,4 +259,5 @@ void solverBase::outputSolidVTU()
         "  </UnstructuredGrid>\n"
         "</VTKFile>\n";
 }
+
 
