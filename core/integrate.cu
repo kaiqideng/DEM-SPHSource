@@ -204,8 +204,7 @@ __global__ void solveMomentumConservationEquation(fluid f,
 	solid s,
 	interactionBase fluid2Fluid,
 	interactionBase fluid2Solid,
-	double3 g,
-	double dt)
+	double3 g)
 {
 	int idx_i = blockIdx.x * blockDim.x + threadIdx.x;
 	if (idx_i >= f.points.num) return;
@@ -402,7 +401,7 @@ void fluidIntegrate(DeviceData& d, double timeStep, int iStep, int integrateGap,
 		fluidPositionIntegrate << <grid, block >> > (d.fluids, 0.5 * timeStep_f);
 	}
 
-	solveMomentumConservationEquation << <grid, block >> > (d.fluids, d.solids, d.fluid2Fluid, d.fluid2Solid, d.gravity, timeStep);
+	solveMomentumConservationEquation << <grid, block >> > (d.fluids, d.solids, d.fluid2Fluid, d.fluid2Solid, d.gravity);
 
 	if (run2ndIntegration == 1)
 	{
@@ -783,5 +782,6 @@ void solidIntegrateAfterContact(DeviceData& d, double timeStep, int maxThreadsPe
 	solidVelocityAngularVelocityIntegrate << <grid, block >> > (d.solids, 0.5 * timeStep);
 
 }
+
 
 
