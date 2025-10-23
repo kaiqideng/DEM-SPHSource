@@ -183,10 +183,11 @@ __global__ void solveMassConservationEquationDensityIntegrate(fluid f,
 		double3 e_ia = normalize(r_ia);
 		double3 deltaW_ia = gradWendlandKernel3D(r_ia, h);
 		double3 dv_dt_a = s.dyn.accelerations[idx_a];
-		double U_L = dot(v_i, -e_ia);
-		double U_R = dot(2 * v_i - v_a, -e_ia);
+		double3 n_a = s.normal[idx_a];
+		double U_L = dot(v_i, -n_a);
+		double U_R = dot(2 * v_i - v_a, -n_a);
 		double P_L = P_i;
-		double P_a = P_i + rho_i * fmax(0., dot(g - dv_dt_a, e_ia)) * dot(r_ia, e_ia);
+		double P_a = P_i + rho_i * fmax(0., dot(g - dv_dt_a, n_a)) * dot(r_ia, n_a);
 		//double P_a = s.pressure[idx_a];
 		double P_R = P_a;
 		double rho_L = rho_i;
@@ -302,8 +303,9 @@ __global__ void solveMomentumConservationEquation(fluid f,
 		double3 e_ia = normalize(r_ia);
 		double3 deltaW_ia = gradWendlandKernel3D(r_ia, h);
 		double3 dv_dt_a = s.dyn.accelerations[idx_a];
+        double3 n_a = s.normal[idx_a];
 		double P_L = P_i;
-		double P_a = P_i + rho_i * fmax(0., dot(g - dv_dt_a, e_ia)) * dot(r_ia, e_ia);
+		double P_a = P_i + rho_i * fmax(0., dot(g - dv_dt_a, n_a)) * dot(r_ia, n_a);
 		//double P_a = s.pressure[idx_a];
 		double P_R = P_a;
 		double rho_L = rho_i;
@@ -782,6 +784,7 @@ void solidIntegrateAfterContact(DeviceData& d, double timeStep, int maxThreadsPe
 	solidVelocityAngularVelocityIntegrate << <grid, block >> > (d.solids, 0.5 * timeStep);
 
 }
+
 
 
 
