@@ -8,7 +8,7 @@ __global__ void densityReinitialization(fluid f, solid s, interactionBase fluid2
 
 __global__ void solveMassConservationEquationDensityIntegrate(fluid f, solid s, interactionBase fluid2Fluid, interactionBase fluid2Solid, double3 g, double dt);
 
-__global__ void solveMomentumConservationEquation(fluid f, solid s, interactionBase fluid2Fluid, interactionBase fluid2Solid, double3 g, double dt);
+__global__ void solveMomentumConservationEquation(fluid f, solid s, interactionBase fluid2Fluid, interactionBase fluid2Solid, double3 g);
 
 __global__ void fluidVelocityIntegrate(fluid f, double dt);
 
@@ -35,5 +35,6 @@ __global__ void clumpPositionIntegrate(clump clumps, double dt);
 void calSolidContactAfterFluidIntegrate(DeviceData& d, double timeStep, int maxThreadsPerBlock);
 
 void solidIntegrateBeforeContact(DeviceData& d, double timeStep, int maxThreadsPerBlock);
+
 
 void solidIntegrateAfterContact(DeviceData& d, double timeStep, int maxThreadsPerBlock);
