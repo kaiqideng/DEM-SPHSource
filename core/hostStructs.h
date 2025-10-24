@@ -52,12 +52,13 @@ struct HostFluid
 	std::vector<double> rho0; // initial density
 	std::vector<double> dRho; // density change
 	std::vector<double> c; // speed of sound
-	std::vector<double> v; // kinematic viscosity
+	std::vector<double> nu; // kinematic viscosity
+	std::vector<double> chi; // background pressure term
 
 	HostFluid() = default;
 
 	explicit HostFluid(int n)
-		: points(n), dyn(n), rho0(n, 0.0), dRho(n, 0.0), c(n, 0.0), v(n, 0.0)
+		: points(n), dyn(n), rho0(n, 0.0), dRho(n, 0.0), c(n, 0.0), nu(n, 0.0), chi(n, 0.0)
 	{
 	}
 
@@ -68,7 +69,8 @@ struct HostFluid
 		rho0.insert(rho0.end(), f.rho0.begin(), f.rho0.end());
 		dRho.insert(dRho.end(), f.dRho.begin(), f.dRho.end());
 		c.insert(c.end(), f.c.begin(), f.c.end());
-		v.insert(v.end(), f.v.begin(), f.v.end());
+		nu.insert(nu.end(), f.nu.begin(), f.nu.end());
+		chi.insert(chi.end(), f.chi.begin(), f.chi.end());
 	}
 };
 
