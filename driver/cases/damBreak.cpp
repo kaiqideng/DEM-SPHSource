@@ -6,7 +6,7 @@ public:
 	damBreak() : solverBase() {}
 
 	double particle_spacing = 0.025;
-	double particle_radius = 0.5 * particle_spacing;
+	double particle_radius = 0.25 * particle_spacing;
 	double E = 3.e9;
 	double3 cubeSize = make_double3(0.15, 0.15, 0.15);
 	double cubeDensity = 800;
@@ -26,10 +26,10 @@ public:
 		{
 			if (p.x < 0 || p.y < 0 || p.z < 0 || p.x > 8. || p.y > 0.7) sp1.push_back(p);
 		}
-		addSolid(sp1, make_double3(0, 0, 0), particle_radius, 0., 0);
+		addSolid(sp1, make_double3(0, 0, 0), 0.5 * particle_spacing, 0., 0);
 
-		setHertzianContactModel(0, 1, E, 0, 1., 0, 0, 0.35, 0, 0);
-		setHertzianContactModel(1, 1, E, 0, 1., 0, 0, 0.45, 0, 0);
+		setHertzianContactModel(0, 1, E, 0.1*E, 1., 0, 0, 0.35, 0, 0);
+		setHertzianContactModel(1, 1, E, 0.1*E, 1., 0, 0, 0.45, 0, 0);
 
 		std::vector<double3> sp2 = getRegularPackedPoints(make_double3(5.3, 0.275, 0.), cubeSize, 2 * particle_radius);
 		std::vector<double3> sp3 = getRegularPackedPoints(make_double3(5.3, 0.275, 0.15), cubeSize, 2 * particle_radius);
@@ -66,3 +66,4 @@ int main()
 	problem.solve();
 
 }
+
