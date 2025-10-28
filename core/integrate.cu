@@ -631,7 +631,6 @@ __global__ void calCylinderWallForceTorque(solid s, interactionSolid2InfiniteWal
 		double3 r_ij = r_i - r_j;
 		double3 r_c0 = r_j + asix * dot(r_ij, asix);
 		double3 n_ij = normalize(r_i - r_c0);
-		double3 r_c = r_c0 + n_ij * rad_j;
 		double delta = length(r_i - r_c0) + rad_i - rad_j;
 		if (delta >= rad_i)
 		{
@@ -644,6 +643,7 @@ __global__ void calCylinderWallForceTorque(solid s, interactionSolid2InfiniteWal
 			solid2CylinderWall.torsionSpring[idx_i * cylinderWalls.num + k] = make_double3(0, 0, 0);
 			return;
 		}
+        double3 r_c = r_c0 + n_ij * (rad_j - 0.5 * delta);
 		double rad_ij = rad_i;
 		double m_ij = 1. / s.inverseMass[idx_i];
 		double3 w_j = cylinderWalls.angularVelocity[k];
@@ -1025,4 +1025,5 @@ void solidIntegrateAfterContact(DeviceData& d, double timeStep, int maxThreadsPe
 //	atomicAddDouble(&(arr[idx].x), v.x);
 //	atomicAddDouble(&(arr[idx].y), v.y);
 //	atomicAddDouble(&(arr[idx].z), v.z);
+
 //}
