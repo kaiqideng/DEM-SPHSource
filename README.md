@@ -1,5 +1,6 @@
 # DEM-SPHSource
 DEM-SPH GPU acceleration
+
 Repository layout
 DEM-SPHSource/
 ├─ core/            # Library code (.cpp/.cu/.h)
